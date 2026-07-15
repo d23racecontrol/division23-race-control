@@ -6,10 +6,10 @@ let leagueConfig = {};
 let activeLeagueId = localStorage.getItem('d23_active_league') || 'pgtc';
 
 async function init(){
-  driverData = await fetch('drivers.json').then(r=>r.json());
+  driverData = await fetch(`data/${activeLeagueId}/drivers.json`).then(r=>r.json());
   leagueConfig = await fetch('leagues.json').then(r=>r.json());
 
-  document.getElementById('loadDrivers').onclick = loadDrivers;
+ document.getElementById('loadDrivers').onclick = loadDrivers;
   document.getElementById('leagueSelect').onchange = ()=>{
     loadDrivers();
     document.getElementById('tableLeagueSelect').value=currentLeague();
@@ -38,38 +38,41 @@ async function init(){
   document.getElementById('globalLeagueSelect').value=activeLeagueId;
   document.getElementById('globalLeagueSelect').onchange=(event)=>selectLeague(event.target.value);
 
-    document.querySelectorAll('[data-page]').forEach(button=>{
-    button.onclick=()=>{
-      const league=leagueConfig[activeLeagueId];
-      const allowedPages = ['leagues', 'calendar'];
+ document.querySelectorAll('[data-page]').forEach(button => {
+  button.onclick = () => {
+    const league = leagueConfig[activeLeagueId];
+    const allowedPages = ['leagues', 'calendar', 'drivers'];
 
-if (
-    league &&
-    !league.configured &&
-    !allowedPages.includes(button.dataset.page)
-) {
-    showPage('leagues');
-    return;
-}
-      showPage(button.dataset.page);
-    };
-  });
-  document.querySelectorAll('[data-open-page]').forEach(button=>{
-    button.onclick=()=>{
-      const league=leagueConfig[activeLeagueId];
-   const allowedOpenPages = ['leagues', 'calendar'];
+    if (
+      league &&
+      !league.configured &&
+      !allowedPages.includes(button.dataset.page)
+    ) {
+      showPage('leagues');
+      return;
+    }
 
-if (
-    league &&
-    !league.configured &&
-    !allowedOpenPages.includes(button.dataset.openPage)
-) {
-    showPage('leagues');
-    return;
-}
-      showPage(button.dataset.openPage);
-    };
-  });
+    showPage(button.dataset.page);
+  };
+});
+
+document.querySelectorAll('[data-open-page]').forEach(button => {
+  button.onclick = () => {
+    const league = leagueConfig[activeLeagueId];
+    const allowedOpenPages = ['leagues', 'calendar', 'drivers'];
+
+    if (
+      league &&
+      !league.configured &&
+      !allowedOpenPages.includes(button.dataset.openPage)
+    ) {
+      showPage('leagues');
+      return;
+    }
+
+    showPage(button.dataset.openPage);
+  };
+});
 
   loadDrivers();
   renderDriverLists();
@@ -83,25 +86,39 @@ if (
 
 
 
-function selectLeague(id){
-  const league=leagueConfig[id];
+async function selectLeague(id){
+  const league = leagueConfig[id];
   if(!league) return;
 
-  activeLeagueId=id;
-  localStorage.setItem('d23_active_league',id);
+  activeLeagueId = id;
+  localStorage.setItem('d23_active_league', id);
+
+  try{
+    driverData = await fetch(`data/${activeLeagueId}/drivers.json`)
+      .then(response => {
+        if(!response.ok){
+          throw new Error(`Fahrerdaten konnten nicht geladen werden: ${response.status}`);
+        }
+        return response.json();
+      });
+  }catch(error){
+    console.error(error);
+    driverData = {};
+  }
 
   applyLeagueTheme();
   renderLeagueCards();
   renderSelectedLeaguePanel();
+  renderDriverLists();
   updateDashboard();
 
-if(league.configured){
-  showPage('dashboard');
-}else if(league.calendarImage){
-  showPage('calendar');
-}else{
-  showPage('leagues');
-}
+  if(league.configured){
+    showPage('dashboard');
+  }else if(league.calendarImage){
+    showPage('calendar');
+  }else{
+    showPage('leagues');
+  }
 }
 
 function applyLeagueTheme(){
@@ -193,16 +210,19 @@ function showPage(page){
 
   const calendarAllowed =
     page === 'calendar' && activeLeague?.calendarImage;
+    const driversAllowed =
+  page === 'drivers' &&
+  Object.keys(driverData || {}).length > 0;
 
-  if(
-    activeLeague &&
-    !activeLeague.configured &&
-    page !== 'leagues' &&
-    !calendarAllowed
-  ){
-    page = 'leagues';
-  }
-
+if(
+  activeLeague &&
+  !activeLeague.configured &&
+  page !== 'leagues' &&
+  !calendarAllowed &&
+  !driversAllowed
+){
+  page = 'leagues';
+}
   document
     .querySelectorAll('.app-page')
     .forEach(section => section.classList.remove('active'));

@@ -168,11 +168,11 @@ body{
   background:color-mix(in srgb,var(--league-primary) 20%,#111);
   color:var(--league-primary);font-weight:900;font-size:12px
 }
-body.non-configured-league #mainNav button:not([data-page="leagues"]):not([data-page="calendar"]){
+body.non-configured-league #mainNav button:not([data-page="leagues"]):not([data-page="calendar"]):not([data-page="drivers"]){
   opacity:.42;
 }
 
-body.non-configured-league #mainNav button:not([data-page="leagues"]):not([data-page="calendar"]):hover{
+body.non-configured-league #mainNav button:not([data-page="leagues"]):not([data-page="calendar"]):not([data-page="drivers"]):hover{
   background:transparent;
 }
 
