@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>D23 United Race Control – Prototyp</title>
+  <link rel="stylesheet" href="style.css?v=081" />
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-main">D23</div>
+      <div>DIVISION 23 UNITED</div>
+      <small>RACE CONTROL</small>
+    </div>
+
+    <nav id="mainNav">
+      <button class="active" data-page="dashboard">🏠 Dashboard</button>
+      <button data-page="leagues">🏁 Ligen</button>
+      <button data-page="drivers">👤 Fahrer</button>
+      <button data-page="races">🔧 Rennen</button>
+      <button data-page="calendar">📅 Kalender</button>
+      <button data-page="tables">📊 Tabellen</button>
+    </nav>
+
+    <div class="version">Prototyp v0.8.1</div>
+  </aside>
+
+  <main>
+    <header>
+      <div>
+        <div class="league-header-row">
+          <div class="active-league-identity">
+            <img id="activeLeagueLogo" src="assets/leagues/pgtc.png" alt="Aktives Liga-Logo">
+            <div>
+              <p id="activeLeagueEyebrow" class="eyebrow">PORSCHE GT CUP · SAISON 1</p>
+              <select id="globalLeagueSelect" class="global-league-select" aria-label="Aktive Liga">
+                <option value="pgtc">Porsche GT Cup</option>
+                <option value="atm">Audi Tourenwagen Meisterschaft</option>
+                <option value="gt3dl">GT3 Derby League</option>
+                <option value="mtc">Mégane Trophy Cup</option>
+                <option value="whc">World Hypercar Championship</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <h1 id="pageTitle">Dashboard</h1>
+        <p id="pageSubtitle" class="sub">Deine Saison auf einen Blick.</p>
+      </div>
+      <div class="user">Verena <span>ADMIN</span></div>
+    </header>
+
+    <section id="page-dashboard" class="app-page active">
+      <div class="dashboard-hero card">
+        <div>
+          <p class="eyebrow">WILLKOMMEN ZURÜCK</p>
+          <h2>Race Control ist bereit. 🏁</h2>
+          <p class="sub">Erfasse ein Rennen, prüfe die Gesamtwertung oder exportiere deine aktuelle Tabellengrafik.</p>
+        </div>
+        <button class="primary" data-open-page="races">Rennergebnis erfassen</button>
+      </div>
+
+      <div class="dashboard-grid">
+        <article class="stat-card card">
+          <span>Gespeicherte Rennen</span>
+          <strong id="dashboardSavedRaces">0 / 10</strong>
+          <small id="dashboardLeagueLabel">Liga 1</small>
+        </article>
+        <article class="stat-card card">
+          <span>Tabellenführer</span>
+          <strong id="dashboardLeader">Noch offen</strong>
+          <small id="dashboardLeaderPoints">0 Punkte</small>
+        </article>
+        <article class="stat-card card">
+          <span>Nächstes Rennen</span>
+          <strong id="dashboardNextRace">Rennen 1</strong>
+          <small>Noch nicht gespeichert</small>
+        </article>
+      </div>
+
+      <div class="dashboard-grid dashboard-actions">
+        <article class="card action-card">
+          <h3>🏁 Rennen</h3>
+          <p>Ergebnis sortieren, Gaststarter markieren und speichern.</p>
+          <button class="ghost" data-open-page="races">Zur Rennerfassung</button>
+        </article>
+        <article class="card action-card">
+          <h3>📊 Tabellen</h3>
+          <p>Gesamtwertung prüfen und PGTC-Grafik herunterladen.</p>
+          <button class="ghost" data-open-page="tables">Gesamtwertung öffnen</button>
+        </article>
+        <article class="card action-card">
+          <h3>👤 Fahrer</h3>
+          <p>Aktuell sind je Liga 15 Stammfahrer hinterlegt.</p>
+          <button class="ghost" data-open-page="drivers">Fahrerliste ansehen</button>
+        </article>
+      </div>
+    </section>
+
+    <section id="page-races" class="app-page">
+      <section class="controls card">
+        <label>
+          Liga
+          <select id="leagueSelect">
+            <option>Liga 1</option>
+            <option>Liga 2</option>
+          </select>
+        </label>
+        <label>
+          Rennen
+          <select id="raceSelect">
+            <option value="1">Rennen 1</option><option value="2">Rennen 2</option>
+            <option value="3">Rennen 3</option><option value="4">Rennen 4</option>
+            <option value="5">Rennen 5</option><option value="6">Rennen 6</option>
+            <option value="7">Rennen 7</option><option value="8">Rennen 8</option>
+            <option value="9">Rennen 9</option><option value="10">Rennen 10</option>
+          </select>
+        </label>
+        <button id="loadDrivers" class="primary">Stammfahrer laden</button>
+      </section>
+
+      <section class="grid">
+        <div class="card">
+          <div class="card-title">
+            <h2>1. Ergebnis eingeben</h2>
+            <button id="addGuest" class="ghost">+ Gaststarter</button>
+          </div>
+          <div class="upload-placeholder">
+            <strong>🏁 Ergebnis komfortabel erfassen</strong>
+            <span>Fahrer per Pfeilen verschieben, Gaststarter direkt markieren und anschließend speichern.</span>
+          </div>
+          <div id="resultRows" class="result-list"></div>
+          <button id="calculate" class="primary full">Vorschau berechnen</button>
+          <button id="saveRace" class="primary full secondary-action">Rennen speichern & Meisterschaft aktualisieren</button>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><h2>2. Zusatzpunkte</h2></div>
+          <label>Pole Position (nur Rennen 1)
+            <select id="poleSelect"><option value="">– niemand –</option></select>
+          </label>
+          <label>Schnellste Runde Sprint
+            <select id="flSprintSelect"><option value="">– niemand –</option></select>
+          </label>
+          <label>Schnellste Runde Hauptrennen
+            <select id="flMainSelect"><option value="">– niemand –</option></select>
+          </label>
+          <label>Fristgerechte Abmeldung (+3)
+            <select id="absenceSelect" multiple size="8"></select>
+          </label>
+          <p class="hint">Mehrfachauswahl: Strg gedrückt halten.</p>
+        </div>
+      </section>
+
+      <section class="card championship-panel">
+        <div class="card-title">
+          <div>
+            <h2>Gespeicherte Saison</h2>
+            <p class="hint">Die Daten werden auf diesem Gerät im Browser gespeichert.</p>
+          </div>
+          <div class="graphic-actions">
+            <button id="showChampionship" class="ghost">Gesamtwertung anzeigen</button>
+            <button id="deleteCurrentRace" class="danger-button">Gewähltes Rennen löschen</button>
+            <button id="resetSeason" class="danger-button">Saison zurücksetzen</button>
+          </div>
+        </div>
+        <div id="seasonStatus" class="season-status">Noch keine Rennen gespeichert.</div>
+      </section>
+    </section>
+
+    <section id="page-tables" class="app-page">
+      <section class="card output">
+        <div class="card-title">
+          <div>
+            <h2>Meisterschaftstabelle</h2>
+            <p class="hint">Gesamtwertung und Grafikexport für die aktuell gewählte Liga.</p>
+          </div>
+          <div class="graphic-actions">
+            <select id="formatSelect" aria-label="Grafikformat">
+              <option value="template">Originalvorlage · 4:5</option>
+            </select>
+            <button id="downloadGraphic" class="ghost">PNG herunterladen</button>
+          </div>
+        </div>
+
+        <div class="table-toolbar">
+          <label>Liga für Tabelle
+            <select id="tableLeagueSelect">
+              <option>Liga 1</option>
+              <option>Liga 2</option>
+            </select>
+          </label>
+          <button id="refreshTable" class="primary">Gesamtwertung laden</button>
+        </div>
+
+        <div id="summary" class="summary">Noch keine Gesamtwertung geladen.</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Pos.</th><th>Fahrer</th><th>#</th><th>Team</th><th>Punkte</th></tr></thead>
+            <tbody id="standingsBody"></tbody>
+          </table>
+        </div>
+        <div class="graphic-preview">
+          <canvas id="tableCanvas" width="1024" height="1536"></canvas>
+        </div>
+      </section>
+    </section>
+
+    <section id="page-drivers" class="app-page">
+      <section class="card placeholder-page">
+        <h2>Fahrerverwaltung</h2>
+        <p>Die vollständige Bearbeitung kommt in einem späteren Schritt. Aktuell kannst du beide Stammfahrerlisten bereits ansehen.</p>
+        <div class="driver-columns">
+          <div><h3>Liga 1</h3><div id="driverList1"></div></div>
+          <div><h3>Liga 2</h3><div id="driverList2"></div></div>
+        </div>
+      </section>
+    </section>
+
+    <section id="page-leagues" class="app-page">
+      <section class="card placeholder-page">
+        <div class="card-title">
+          <div>
+            <h2>Ligenauswahl</h2>
+            <p class="hint">Jede Serie erhält eigene Fahrer, Regeln, Kalender, Tabellen und Designs.</p>
+          </div>
+        </div>
+        <div id="selectedLeaguePanel" class="selected-league-panel"></div>
+        <div id="leagueCards" class="league-selection-grid"></div>
+      </section>
+    </section>
+  </main>
+
+  <script src="app.js?v=081"></script>
+</body>
+</html>

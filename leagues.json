@@ -1,0 +1,57 @@
+{
+  "pgtc": {
+    "name": "Porsche GT Cup",
+    "short": "PGTC",
+    "season": "Saison 1",
+    "logo": "assets/leagues/pgtc.png",
+    "primary": "#e30613",
+    "secondary": "#ffffff",
+    "background": "#090a0f",
+    "status": "Aktiv",
+    "configured": true
+  },
+  "atm": {
+    "name": "Audi Tourenwagen Meisterschaft",
+    "short": "ATM",
+    "season": "Saison 13",
+    "logo": "assets/leagues/atm.jpeg",
+    "primary": "#d71920",
+    "secondary": "#ffffff",
+    "background": "#080808",
+    "status": "Grundlage angelegt",
+    "configured": false
+  },
+  "gt3dl": {
+    "name": "GT3 Derby League",
+    "short": "GT3DL",
+    "season": "Saison 2",
+    "logo": "assets/leagues/gt3dl.jpg",
+    "primary": "#70e8c0",
+    "secondary": "#ffffff",
+    "background": "#07120f",
+    "status": "Grundlage angelegt",
+    "configured": false
+  },
+  "mtc": {
+    "name": "Mégane Trophy Cup",
+    "short": "MTC",
+    "season": "Saison 6",
+    "logo": "assets/leagues/mtc.jpg",
+    "primary": "#5720b8",
+    "secondary": "#ffffff",
+    "background": "#0e0718",
+    "status": "Grundlage angelegt",
+    "configured": false
+  },
+  "whc": {
+    "name": "World Hypercar Championship",
+    "short": "WHC",
+    "season": "Saison 1",
+    "logo": "assets/leagues/whc.png",
+    "primary": "#d9a928",
+    "secondary": "#ffffff",
+    "background": "#090806",
+    "status": "Grundlage angelegt",
+    "configured": false
+  }
+}
