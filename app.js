@@ -115,12 +115,21 @@ function renderSelectedLeaguePanel(){
   const root=document.getElementById('selectedLeaguePanel');
   if(!root) return;
 
-  const league=leagueConfig[activeLeagueId];
-  if(!league || league.configured){
-    root.classList.remove('visible');
-    root.innerHTML='';
-    return;
-  }
+const allowedForUnconfigured =
+  button.dataset.page === 'leagues' ||
+  (
+    button.dataset.page === 'calendar' &&
+    league?.calendarImage
+  );
+
+if(
+  league &&
+  !league.configured &&
+  !allowedForUnconfigured
+){
+  showPage('leagues');
+  return;
+}
 
   root.innerHTML=`
     <img src="${league.logo}?v=081-panel-${activeLeagueId}" alt="${league.name} Logo">

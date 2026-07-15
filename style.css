@@ -219,3 +219,8 @@ body.non-configured-league #mainNav button:not([data-page="leagues"]):hover{
 .calendar-link[hidden]{
   display:none !important;
 }
+body.non-configured-league #mainNav button[data-page="calendar"]{
+  opacity:1;
+  pointer-events:auto;
+  cursor:pointer;
+}
