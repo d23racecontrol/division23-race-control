@@ -6,8 +6,17 @@ let leagueConfig = {};
 let activeLeagueId = localStorage.getItem('d23_active_league') || 'pgtc';
 
 async function init(){
-  driverData = await fetch(`data/${activeLeagueId}/drivers.json`).then(r=>r.json());
-  leagueConfig = await fetch('leagues.json').then(r=>r.json());
+  activeLeagueId =
+    localStorage.getItem('d23_active_league') || 'pgtc';
+
+  leagueConfig =
+    await fetch(`leagues.json?v=${Date.now()}`).then(r => r.json());
+
+  driverData =
+    await fetch(`data/${activeLeagueId}/drivers.json?v=${Date.now()}`)
+      .then(r => r.json());
+
+  document.getElementById('globalLeagueSelect').value = activeLeagueId;
 
  document.getElementById('loadDrivers').onclick = loadDrivers;
   document.getElementById('leagueSelect').onchange = ()=>{
