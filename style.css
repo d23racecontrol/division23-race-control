@@ -168,11 +168,18 @@ body{
   background:color-mix(in srgb,var(--league-primary) 20%,#111);
   color:var(--league-primary);font-weight:900;font-size:12px
 }
-body.non-configured-league #mainNav button:not([data-page="leagues"]){
+body.non-configured-league #mainNav button:not([data-page="leagues"]):not([data-page="calendar"]){
   opacity:.42;
 }
-body.non-configured-league #mainNav button:not([data-page="leagues"]):hover{
+
+body.non-configured-league #mainNav button:not([data-page="leagues"]):not([data-page="calendar"]):hover{
   background:transparent;
+}
+
+body.non-configured-league #mainNav button[data-page="calendar"]{
+  opacity:1;
+  pointer-events:auto;
+  cursor:pointer;
 }
 @media(max-width:700px){
   .selected-league-panel{grid-template-columns:1fr}

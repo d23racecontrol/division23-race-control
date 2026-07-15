@@ -41,20 +41,32 @@ async function init(){
     document.querySelectorAll('[data-page]').forEach(button=>{
     button.onclick=()=>{
       const league=leagueConfig[activeLeagueId];
-      if(league && !league.configured && button.dataset.page!=='leagues'){
-        showPage('leagues');
-        return;
-      }
+      const allowedPages = ['leagues', 'calendar'];
+
+if (
+    league &&
+    !league.configured &&
+    !allowedPages.includes(button.dataset.page)
+) {
+    showPage('leagues');
+    return;
+}
       showPage(button.dataset.page);
     };
   });
   document.querySelectorAll('[data-open-page]').forEach(button=>{
     button.onclick=()=>{
       const league=leagueConfig[activeLeagueId];
-      if(league && !league.configured){
-        showPage('leagues');
-        return;
-      }
+   const allowedOpenPages = ['leagues', 'calendar'];
+
+if (
+    league &&
+    !league.configured &&
+    !allowedOpenPages.includes(button.dataset.openPage)
+) {
+    showPage('leagues');
+    return;
+}
       showPage(button.dataset.openPage);
     };
   });
