@@ -177,26 +177,13 @@ function applyLeagueTheme(){
 }
 
 function renderSelectedLeaguePanel(){
-  const root=document.getElementById('selectedLeaguePanel');
+  const root = document.getElementById('selectedLeaguePanel');
   if(!root) return;
 
-const allowedForUnconfigured =
-  button.dataset.page === 'leagues' ||
-  (
-    button.dataset.page === 'calendar' &&
-    league?.calendarImage
-  );
+  const league = leagueConfig[activeLeagueId];
+  if(!league) return;
 
-if(
-  league &&
-  !league.configured &&
-  !allowedForUnconfigured
-){
-  showPage('leagues');
-  return;
-}
-
-  root.innerHTML=`
+  root.innerHTML = `
     <img src="${league.logo}?v=081-panel-${activeLeagueId}" alt="${league.name} Logo">
     <div>
       <p class="eyebrow">${league.short} · ${league.season}</p>
@@ -206,6 +193,7 @@ if(
       <span class="coming-soon">MODUL WIRD EINGERICHTET</span>
     </div>
   `;
+
   root.classList.add('visible');
 }
 
