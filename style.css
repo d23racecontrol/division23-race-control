@@ -178,3 +178,44 @@ body.non-configured-league #mainNav button:not([data-page="leagues"]):hover{
   .selected-league-panel{grid-template-columns:1fr}
   .selected-league-panel img{width:100%;height:130px}
 }
+.calendar-page-card{
+  max-width:1180px;
+}
+
+.calendar-link{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
+}
+
+.calendar-image-wrap{
+  margin-top:18px;
+  border:1px solid var(--border);
+  border-radius:16px;
+  overflow:hidden;
+  background:#07090d;
+}
+
+.calendar-image-wrap img{
+  display:block;
+  width:100%;
+  height:auto;
+  object-fit:contain;
+}
+
+.calendar-empty-state{
+  margin-top:18px;
+  padding:40px 24px;
+  border:1px dashed var(--border);
+  border-radius:14px;
+  text-align:center;
+  color:var(--muted);
+  background:#0b0f15;
+}
+
+.calendar-image-wrap[hidden],
+.calendar-empty-state[hidden],
+.calendar-link[hidden]{
+  display:none !important;
+}

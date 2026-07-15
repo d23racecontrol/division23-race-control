@@ -166,25 +166,108 @@ const pageMeta={
 };
 
 function showPage(page){
-  const activeLeague=leagueConfig[activeLeagueId];
-  if(activeLeague && !activeLeague.configured && page!=='leagues'){
-    page='leagues';
-  }
-  document.querySelectorAll('.app-page').forEach(section=>section.classList.remove('active'));
-  document.getElementById(`page-${page}`)?.classList.add('active');
-  document.querySelectorAll('#mainNav button').forEach(button=>{
-    button.classList.toggle('active',button.dataset.page===page);
-  });
-  const meta=pageMeta[page]||pageMeta.dashboard;
-  document.getElementById('pageTitle').textContent=meta[0];
-  document.getElementById('pageSubtitle').textContent=meta[1];
+  const activeLeague = leagueConfig[activeLeagueId];
 
-  if(page==='dashboard') updateDashboard();
-  if(page==='tables'){
-    document.getElementById('tableLeagueSelect').value=currentLeague();
+  const calendarAllowed =
+    page === 'calendar' && activeLeague?.calendarImage;
+
+  if(
+    activeLeague &&
+    !activeLeague.configured &&
+    page !== 'leagues' &&
+    !calendarAllowed
+  ){
+    page = 'leagues';
+  }
+
+  document
+    .querySelectorAll('.app-page')
+    .forEach(section => section.classList.remove('active'));
+
+  document
+    .getElementById(`page-${page}`)
+    ?.classList.add('active');
+
+  document
+    .querySelectorAll('#mainNav button')
+    .forEach(button => {
+      button.classList.toggle(
+        'active',
+        button.dataset.page === page
+      );
+    });
+
+  const meta = pageMeta[page] || pageMeta.dashboard;
+
+  document.getElementById('pageTitle').textContent = meta[0];
+  document.getElementById('pageSubtitle').textContent = meta[1];
+
+  if(page === 'dashboard'){
+    updateDashboard();
+  }
+
+  if(page === 'calendar'){
+    renderCalendarPage();
+  }
+
+  if(page === 'tables'){
+    document.getElementById('tableLeagueSelect').value = currentLeague();
     showChampionship();
   }
-  window.scrollTo({top:0,behavior:'smooth'});
+
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+}
+function renderCalendarPage(){
+  const league = leagueConfig[activeLeagueId];
+
+  const image = document.getElementById('calendarImage');
+  const imageWrap = document.getElementById('calendarImageWrap');
+  const emptyState = document.getElementById('calendarEmptyState');
+  const title = document.getElementById('calendarLeagueTitle');
+  const subtitle = document.getElementById('calendarLeagueSubtitle');
+  const originalLink = document.getElementById('calendarOpenOriginal');
+
+  if(
+    !league ||
+    !image ||
+    !imageWrap ||
+    !emptyState ||
+    !title ||
+    !subtitle ||
+    !originalLink
+  ){
+    return;
+  }
+
+  title.textContent = `${league.name} – ${league.season}`;
+  subtitle.textContent = 'Offizieller Rennkalender als Originalgrafik.';
+
+  if(league.calendarImage){
+    const imagePath = `${league.calendarImage}?v=${Date.now()}`;
+
+    image.src = imagePath;
+    image.alt =
+      league.calendarAlt ||
+      `${league.name} Rennkalender`;
+
+    originalLink.href = imagePath;
+
+    imageWrap.hidden = false;
+    emptyState.hidden = true;
+    originalLink.hidden = false;
+  }else{
+    image.removeAttribute('src');
+    image.alt = '';
+
+    originalLink.removeAttribute('href');
+
+    imageWrap.hidden = true;
+    emptyState.hidden = false;
+    originalLink.hidden = true;
+  }
 }
 
 function renderDriverLists(){
