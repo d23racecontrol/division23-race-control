@@ -94,28 +94,61 @@ async function selectLeague(id){
   localStorage.setItem('d23_active_league', id);
 
   try{
-    driverData = await fetch(`data/${activeLeagueId}/drivers.json`)
-      .then(response => {
-        if(!response.ok){
-          throw new Error(`Fahrerdaten konnten nicht geladen werden: ${response.status}`);
-        }
-        return response.json();
-      });
+    const response = await fetch(
+      `data/${activeLeagueId}/drivers.json?v=${Date.now()}`
+    );
+
+    if(!response.ok){
+      throw new Error(
+        `Fahrerdaten konnten nicht geladen werden: ${response.status}`
+      );
+    }
+
+    driverData = await response.json();
   }catch(error){
     console.error(error);
     driverData = {};
   }
 
-  applyLeagueTheme();
+  // Liga- und Tabellen-Auswahl neu aufbauen
+  const divisions = Object.keys(driverData);
+
+  const leagueSelect = document.getElementById('leagueSelect');
+  const tableLeagueSelect = document.getElementById('tableLeagueSelect');
+
+  [leagueSelect, tableLeagueSelect].forEach(select => {
+    if(!select) return;
+
+    select.innerHTML = '';
+
+    divisions.forEach(division => {
+      const option = document.createElement('option');
+      option.value = division;
+      option.textContent = division;
+      select.appendChild(option);
+    });
+  });
+
+  // Alle sichtbaren Bereiche direkt aktualisieren
   renderLeagueCards();
   renderSelectedLeaguePanel();
   renderDriverLists();
+  renderCalendarPage();
+
+  if(divisions.length){
+    loadDrivers();
+    fillBonusSelects();
+  }
+
+  updateSeasonStatus();
   updateDashboard();
 
   if(league.configured){
     showPage('dashboard');
   }else if(league.calendarImage){
     showPage('calendar');
+  }else if(divisions.length){
+    showPage('drivers');
   }else{
     showPage('leagues');
   }
