@@ -101,6 +101,25 @@ async function selectLeague(id){
 
   activeLeagueId = id;
   localStorage.setItem('d23_active_league', id);
+  const root = document.documentElement;
+
+root.style.setProperty('--league-primary', league.primary);
+root.style.setProperty('--league-secondary', league.secondary);
+root.style.setProperty('--league-bg', league.background);
+
+document.body.classList.toggle(
+  'non-configured-league',
+  !league.configured
+);
+
+document.getElementById('globalLeagueSelect').value = id;
+
+const activeLogo = document.getElementById('activeLeagueLogo');
+activeLogo.src = `${league.logo}?v=${Date.now()}`;
+activeLogo.alt = `${league.name} Logo`;
+
+document.getElementById('activeLeagueEyebrow').textContent =
+  `${league.name.toUpperCase()} · ${league.season.toUpperCase()}`;
 
   try{
     const response = await fetch(
