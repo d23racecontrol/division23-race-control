@@ -8,7 +8,9 @@
     "secondary": "#ffffff",
     "background": "#090a0f",
     "status": "Aktiv",
-    "configured": true
+    "configured": true,
+    "calendarImage": "assets/calendars/pgtc-s1.png",
+"calendarAlt": "Porsche GT Cup Saison 1 Rennkalender"
   },
   "atm": {
     "name": "Audi Tourenwagen Meisterschaft",
