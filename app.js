@@ -95,11 +95,13 @@ function selectLeague(id){
   renderSelectedLeaguePanel();
   updateDashboard();
 
-  if(league.configured){
-    showPage('dashboard');
-  }else{
-    showPage('leagues');
-  }
+if(league.configured){
+  showPage('dashboard');
+}else if(league.calendarImage){
+  showPage('calendar');
+}else{
+  showPage('leagues');
+}
 }
 
 function applyLeagueTheme(){
