@@ -123,6 +123,7 @@ async function selectLeague(id){
 
 function applyLeagueTheme(){
   const league=leagueConfig[activeLeagueId] || leagueConfig.pgtc;
+  console.log("Aktive Liga:", activeLeagueId, league);
   const root=document.documentElement;
 
   root.style.setProperty('--league-primary',league.primary);
@@ -316,12 +317,18 @@ function renderCalendarPage(){
 function renderDriverLists(){
   ['Liga 1','Liga 2'].forEach((league,index)=>{
     const root=document.getElementById(`driverList${index+1}`);
-    root.innerHTML=driverData[league].map(driver=>`
+    if(!root) return;
+
+    const drivers=driverData[league] || [];
+
+    root.innerHTML=drivers.map(driver=>`
       <div class="driver-list-item">
         <strong>${driver.psn}</strong>
         <small>#${driver.number} · ${driver.team}</small>
       </div>
     `).join('');
+
+    root.parentElement.style.display=drivers.length ? '' : 'none';
   });
 }
 
