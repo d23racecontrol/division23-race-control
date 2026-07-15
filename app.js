@@ -139,6 +139,7 @@ async function selectLeague(id){
   });
 
   // Alle sichtbaren Bereiche direkt aktualisieren
+  applyLeagueTheme();
   renderLeagueCards();
   renderSelectedLeaguePanel();
   renderDriverLists();
