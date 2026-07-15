@@ -19,7 +19,9 @@
     "secondary": "#ffffff",
     "background": "#080808",
     "status": "Grundlage angelegt",
-    "configured": false
+    "configured": false,
+"calendarImage": "assets/calendars/atm-s13.jpg",
+"calendarAlt": "ATM Saison 13 Rennkalender"
   },
   "gt3dl": {
     "name": "GT3 Derby League",
